@@ -1,14 +1,16 @@
 package GUI;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import DAO.UsuarioDAO;
 import Models.Usuario;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class Login {
 
@@ -18,12 +20,14 @@ public class Login {
 	private JLabel usuarioLabel;
 	private JLabel passwordLabel;
 	private JButton btnLogin;
+	private UsuarioDAO usuarioDAO;
 
 	/**
 	 * Create the application.
 	 */
 	public Login() {
 		initialize();
+		usuarioDAO = new UsuarioDAO();
 	}
 
 	/**
@@ -80,8 +84,7 @@ public class Login {
 			public void actionPerformed(ActionEvent e) {
 				Usuario usuario = createUsuario();
 				
-				if(usuario.getUsername().equals("jose") && 
-						usuario.getPassword().equals("P@ssw0rd")) {
+				if(usuarioDAO.Login(usuario)) {
 					System.out.println("Login correcto");					
 				} else {
 					System.out.println("INCORRECTO");

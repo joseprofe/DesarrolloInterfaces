@@ -1,33 +1,32 @@
 package DAO;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
-import Common.ConstantsEv;
+import Models.Usuario;
 
-public class UsuarioDAO {
+public class UsuarioDAO extends AbstractDAO{
 
 	public UsuarioDAO() {
-		
+		super();
 	}
-	
-	protected Connection ConectarBD() {
-		Connection con = null;
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			try {
-				con = DriverManager.getConnection(						
-								ConstantsEv.conexionBD,
-						"jose", "P@ssw0rd");
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 
-		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+	public boolean Login(Usuario u) {
+		Statement stmt;
+		try {
+			stmt = this.con.createStatement();
+			ResultSet rs = stmt.executeQuery("select * from usuarios "
+											+ "where username='"+u.getUsername()
+											+ "' and password='"+u.getPassword()
+											+ "';");
+			return rs.next();
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return con;
+		return true;
 	}
+
+	
 
 }
